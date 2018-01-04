@@ -1,14 +1,10 @@
 package DBC;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.ConnectionPoolDataSource;
 import javax.sql.DataSource;
-import javax.sql.PooledConnection;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
@@ -20,7 +16,7 @@ public class ConnectionManager {
         if(dataSource == null){
             try {
                 InitialContext context = new InitialContext();
-                dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/MyLocalDB");
+                dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/MyDB");
             } catch (NamingException e) {
                 e.printStackTrace();
             }
