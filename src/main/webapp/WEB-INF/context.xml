@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Resource name="jdbc/MyDB"
+          global="jdbc/MyDB"
+          auth="Container"
+          type="javax.sql.DataSource"
+          driverClassName="com.mysql.jdbc.Driver"
+          url="jdbc:mysql://localhost:3306/SocialNetwork"
+          username="root"
+          password="4326145"
+
+          maxActive="100"
+          maxIdle="20"
+          minIdle="5"
+          maxWait="10000"/>
