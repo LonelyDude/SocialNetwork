@@ -1,8 +1,8 @@
-package Controllers;
+package controllers;
 
-import Annotation.Inject;
-import Context.ApplicationContextSkeleton;
-import Reflection.FieldReflector;
+import annotation.Inject;
+import context.ApplicationContextSkeleton;
+import reflection.FieldReflector;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.ServletException;

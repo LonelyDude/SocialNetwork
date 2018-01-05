@@ -1,4 +1,4 @@
-package DBC;
+package dbc;
 
 
 import javax.naming.InitialContext;
@@ -8,27 +8,27 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
-public class ConnectionManager {
+public class TransactionManager {
 
-    private DataSource dataSource;
+    private ThreadLocal<Connection> connections = new ThreadLocal<>();
 
     public Connection getConnection() throws SQLException {
-        if(dataSource == null){
+        if(connections.get() == null){
             try {
                 InitialContext context = new InitialContext();
-                dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/MyDB");
+                DataSource dataSource = (DataSource) context.lookup("java:/comp/env/jdbc/MyDB");
+                connections.set(dataSource.getConnection());
             } catch (NamingException e) {
                 e.printStackTrace();
             }
         }
-        return dataSource.getConnection();
+        return connections.get();
     }
 
     public <T> T doInTransaction(Callable<T> call) {
-        Connection connection = null;
+        Connection connection = connections.get();
         T result = null;
         try {
-            connection = getConnection();
             result = call.call();
             connection.commit();
         } catch (Exception e) {

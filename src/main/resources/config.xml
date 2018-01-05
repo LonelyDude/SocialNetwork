@@ -4,6 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean name="connectionManager" class="DBC.ConnectionManager" scope="singleton"/>
+    <bean name="transactionManager" class="dbc.TransactionManager" scope="singleton"/>
 
+    <bean name="UserDao" class="dao.UserDao" scope="singleton">
+        <property name="dataSource" ref="transactionManager"/>
+    </bean>
 </beans>

@@ -1,6 +1,6 @@
-package Reflection;
+package reflection;
 
-import Annotation.Inject;
+import annotation.Inject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
