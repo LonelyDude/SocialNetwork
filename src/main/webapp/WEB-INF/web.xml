@@ -9,6 +9,17 @@
         <param-value>resources/config.xml</param-value>
     </context-param>
 
+    <servlet>
+        <servlet-name>login</servlet-name>
+        <servlet-class>controllers.LoginController</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>login</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
     <resource-ref>
     <res-ref-name>jdbc/MyDB</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
