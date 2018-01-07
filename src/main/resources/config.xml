@@ -6,7 +6,7 @@
 
     <bean name="transactionManager" class="dbc.TransactionManager" scope="singleton"/>
 
-    <bean name="UserDao" class="dao.UserDao" scope="singleton">
+    <bean name="userDao" class="dao.UserDao" scope="singleton">
         <property name="dataSource" ref="transactionManager"/>
     </bean>
 </beans>

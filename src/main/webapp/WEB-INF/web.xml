@@ -6,7 +6,7 @@
 
     <context-param>
         <param-name>springConfig</param-name>
-        <param-value>resources/config.xml</param-value>
+        <param-value>config.xml</param-value>
     </context-param>
 
     <servlet>
@@ -14,10 +14,18 @@
         <servlet-class>controllers.LoginController</servlet-class>
         <async-supported>true</async-supported>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>login</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>main</servlet-name>
+        <servlet-class>controllers.MainController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>main</servlet-name>
+        <url-pattern>/main</url-pattern>
     </servlet-mapping>
 
     <resource-ref>

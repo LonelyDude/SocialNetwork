@@ -14,31 +14,27 @@ public class LoginController extends InjectionServlet {
 
     public static final String MAIN_MENU_PAGE = "login.jsp";
     public static final String USER_PAGE = "user.jsp";
-    public static final String EMAIL = "email";
+    public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
 
     @Inject("userDao")
     private UserDao userDao;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         final AsyncContext asyncСontext = req.startAsync();
         asyncСontext.start(()->{
-            try{
-                User user = userDao.login(req.getParameter(EMAIL), req.getParameter(PASSWORD));
+                User user = userDao.login(req.getParameter(LOGIN), req.getParameter(PASSWORD));
 
-                if(user == null) req.getRequestDispatcher(MAIN_MENU_PAGE).forward(req, resp);
+                if(user == null){
+                    asyncСontext.dispatch(MAIN_MENU_PAGE);
+                    return;
+                }
 
-                req.setAttribute("user", user);
-                req.getRequestDispatcher(USER_PAGE).forward(req, resp);
+                req.getSession().setAttribute("user", user);
 
-            } catch (ServletException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }finally {
-                asyncСontext.complete();
-            }
+                asyncСontext.dispatch(USER_PAGE);
         });
 
     }
