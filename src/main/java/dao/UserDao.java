@@ -43,7 +43,29 @@ public class UserDao {
         }
     }
 
+    public boolean addUser(User user){
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        boolean result = false;
+        try{
+            Connection connection = dataSource.getConnection();
+            statement = connection.prepareStatement("SELECT email FROM user WHERE email = ?");
+            statement.setString(1, user.getEmail());
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                result = false;
+                return result;
+            }
+            statement = connection.prepareStatement("INSERT INTO user VALUE(?, ?, ?, ?, ?, ?, false)");
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getLastName());
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            return result;
+        }
+    }
 
     public void setDataSource(TransactionManager dataSource) {
         this.dataSource = dataSource;
