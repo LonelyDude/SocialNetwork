@@ -1,6 +1,8 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private String name;
@@ -10,6 +12,24 @@ public class User {
     private String email;
     private String password;
     private boolean status;
+    private List<User> friends = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
+    }
 
     public String getName() {
         return name;

@@ -6,12 +6,15 @@
 </head>
 <body>
         <form action="${pageContext.request.contextPath}/login" method="post">
-            <label for="login-field">Ваш логин</label>
+            <label for="login-field">Login:</label>
             <input type="text" name="login" id="login-field">
-            <br><br>
-            <label for="password-field">Ваш пароль</label>
-            <input type="text" name="password" id="password-field" value="">
-            <input type="submit" value="Войти" />
+            <br/>
+            <label for="password-field">Password:</label>
+            <input type="text" name="password" id="password-field">
+            <br/>
+            <input type="submit" value="Sign up" />
+            <br/>
+            <a href="${pageContext.request.contextPath}/signUp.jsp">Sign up<a/>
         </form>
 </body>
 </html>

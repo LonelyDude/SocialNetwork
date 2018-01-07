@@ -25,16 +25,21 @@ public class LoginController extends InjectionServlet {
 
         final AsyncContext asyncСontext = req.startAsync();
         asyncСontext.start(()->{
+            try{
                 User user = userDao.login(req.getParameter(LOGIN), req.getParameter(PASSWORD));
 
                 if(user == null){
-                    asyncСontext.dispatch(MAIN_MENU_PAGE);
+                    resp.sendRedirect(MAIN_MENU_PAGE);
                     return;
                 }
 
                 req.getSession().setAttribute("user", user);
-
-                asyncСontext.dispatch(USER_PAGE);
+                resp.sendRedirect(USER_PAGE);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                asyncСontext.complete();
+            }
         });
 
     }

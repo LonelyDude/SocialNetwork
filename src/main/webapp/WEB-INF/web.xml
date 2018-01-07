@@ -28,6 +28,15 @@
         <url-pattern>/main</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>signUp</servlet-name>
+        <servlet-class>controllers.SignUpController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>signUp</servlet-name>
+        <url-pattern>/signUp</url-pattern>
+    </servlet-mapping>
+
     <resource-ref>
     <res-ref-name>jdbc/MyDB</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
