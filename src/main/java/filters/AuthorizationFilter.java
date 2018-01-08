@@ -8,7 +8,6 @@ import java.io.IOException;
 
 public class AuthorizationFilter extends HttpFilter {
     public static final String MAIN_MENU_PAGE = "login.jsp";
-    public static final String USER_PAGE = "user.jsp";
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
@@ -16,7 +15,5 @@ public class AuthorizationFilter extends HttpFilter {
             res.sendRedirect(MAIN_MENU_PAGE);
             return;
         }
-
-        res.sendRedirect(USER_PAGE);
     }
 }

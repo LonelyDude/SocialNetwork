@@ -64,36 +64,62 @@ public class UserDao {
         }
     }
 
-    public boolean addUser(User user){
+    public String addUser(User user, String email, String password){
         Connection connection = null;
-        PreparedStatement statement = null;
+        CallableStatement statement = null;
         ResultSet resultSet = null;
-        boolean result = false;
+        String result = null;
         try{
             connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
 
-            statement = connection.prepareStatement("INSERT INTO user VALUE(?, ?, ?, ?)");
-            statement.setString(1, user.getName());
-            statement.setString(2, user.getLastName());
-            statement.setDate(3, java.sql.Date.valueOf(user.getBirth()));
-            statement.setString(4, String.valueOf(user.getSex()));
-
-            statement = connection.prepareStatement("INSERT INTO authorization VALUE(?, ?, ?)");
+            statement = connection.prepareCall("{? = CALL insertUser(?, ?, ?, ?, ?, ?)}");
+            statement.registerOutParameter(1, Types.TIMESTAMP);
+            statement.setString(2, user.getName());
+            statement.setString(3, user.getLastName());
+            statement.setDate(4, java.sql.Date.valueOf(user.getBirth()));
+            statement.setString(5, String.valueOf(user.getSex()));
+            statement.setString(6, email);
+            statement.setString(7, password);
+            statement.execute();
 
             connection.commit();
-            result = true;
+
+            Timestamp token = statement.getTimestamp(1);
+            result = token.toString();
+
         } catch (SQLException e) {
             e.printStackTrace();
-            connection.rollback();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         }finally {
             return result;
         }
 
     }
 
-    public boolean confirmEmail(int token){
+    public void confirmEmail(String token){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try{
+            connection = dataSource.getConnection();
+            connection.setAutoCommit(false);
 
-        return true;
+            statement = connection.prepareStatement("DELETE FROM email_confirming WHERE token = ?");
+            statement.setString(1, token);
+
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     public void setDataSource(ConnectionManager dataSource) {

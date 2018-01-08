@@ -27,6 +27,15 @@
         <servlet-name>signUp</servlet-name>
         <url-pattern>/signUp</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>confirmEmail</servlet-name>
+        <servlet-class>controllers.ConfirmEmailController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>confirmEmail</servlet-name>
+        <url-pattern>/confirmEmail</url-pattern>
+    </servlet-mapping>
     
     <filter>
         <filter-name>authorizationFilter</filter-name>

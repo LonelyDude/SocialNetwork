@@ -2,7 +2,6 @@ package controllers;
 
 import annotation.Inject;
 import dao.UserDao;
-import dbc.ConnectionManager;
 import entity.User;
 
 import javax.servlet.AsyncContext;
@@ -40,11 +39,14 @@ public class SignUpController extends InjectionServlet {
 
                 User user = makeUser(req);
 
-                if(! userDao.addUser(user)){
+                String token = userDao.addUser(user, req.getParameter(EMAIL), req.getParameter(PASSWORD));
+
+                if(token == null){
                     req.setAttribute("error", "Try later.");
                     resp.sendRedirect(SIGN_UP_PAGE);
                     return;
                 }else{
+                    sendConfirmingRef(token);
                     req.getSession().setAttribute("user", user);
                     resp.sendRedirect(USER_PAGE);
                 }
@@ -69,7 +71,7 @@ public class SignUpController extends InjectionServlet {
         return user;
     }
 
-    private void sendConfirmingRef(){
+    private void sendConfirmingRef(String token){
 
     }
 }
