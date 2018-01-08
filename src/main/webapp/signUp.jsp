@@ -9,8 +9,8 @@
             <p><%=request.getAttribute("error")%></p>
         </c:if>
         <form action="${pageContext.request.contextPath}/signUp" method="post">
-            <label for="login-field">Email:</label>
-            <input type="text" name="login" id="login-field"/>
+            <label for="email-field">Email:</label>
+            <input type="text" name="email" id="login-field"/>
             <br/>
             <label for="password-field">Password:</label>
             <input type="text" name="password" id="password-field"/>

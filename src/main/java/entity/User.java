@@ -1,34 +1,21 @@
 package entity;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 public class User {
+    private int id;
     private String name;
     private String lastName;
-    private Date birth;
+    private LocalDate birth;
     private char sex;
-    private String email;
-    private String password;
-    private boolean status;
-    private List<User> friends = new ArrayList<>();
-    private List<Message> messages = new ArrayList<>();
 
-    public List<User> getFriends() {
-        return friends;
+    public int getId() {
+        return id;
     }
 
-    public void setFriends(List<User> friends) {
-        this.friends = friends;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -47,11 +34,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getBirth() {
+    public LocalDate getBirth() {
         return birth;
     }
 
-    public void setBirth(Date birth) {
+    public void setBirth(LocalDate birth) {
         this.birth = birth;
     }
 
@@ -63,27 +50,4 @@ public class User {
         this.sex = sex;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 }

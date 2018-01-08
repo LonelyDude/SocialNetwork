@@ -6,9 +6,8 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.concurrent.Callable;
 
-public class TransactionManager {
+public class ConnectionManager {
 
     private ThreadLocal<Connection> connections = new ThreadLocal<>();
 
@@ -23,22 +22,5 @@ public class TransactionManager {
             }
         }
         return connections.get();
-    }
-
-    public <T> T doInTransaction(Callable<T> call) {
-        Connection connection = connections.get();
-        T result = null;
-        try {
-            result = call.call();
-            connection.commit();
-        } catch (Exception e) {
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
-        }finally {
-            return result;
-        }
     }
 }
