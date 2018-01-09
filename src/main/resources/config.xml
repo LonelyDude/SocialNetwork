@@ -7,6 +7,15 @@
     <bean name="connectionManager" class="dbc.ConnectionManager" scope="singleton"/>
 
     <bean name="userDao" class="dao.UserDao" scope="singleton">
-        <property name="dataSource" ref="transactionManager"/>
+        <property name="dataSource" ref="connectionManager"/>
+    </bean>
+
+    <bean name="mailManager" class="mail.MailManager" scope="singleton" init-method="init">
+        <property name="smtpHost" value="smtp.mail.ru"/>
+        <property name="smtpPort" value="465"/>
+        <property name="login" value="HollyFurts@mail.ru"/>
+        <property name="password" value="rus90210"/>
+        <property name="thema" value="Registration"/>
+        <property name="url" value=""/>
     </bean>
 </beans>

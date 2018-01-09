@@ -2,7 +2,9 @@ package controllers;
 
 import annotation.Inject;
 import dao.UserDao;
+import dbc.ConnectionManager;
 import entity.User;
+import mail.MailManager;
 
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.Callable;
 
 public class SignUpController extends InjectionServlet {
 
@@ -26,6 +29,12 @@ public class SignUpController extends InjectionServlet {
     @Inject("userDao")
     private UserDao userDao;
 
+    @Inject("connectionManager")
+    private ConnectionManager connectionManager;
+
+    @Inject("mailManager")
+    private MailManager mailManager;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final AsyncContext asyncContext = req.getAsyncContext();
@@ -39,14 +48,14 @@ public class SignUpController extends InjectionServlet {
 
                 User user = makeUser(req);
 
-                String token = userDao.addUser(user, req.getParameter(EMAIL), req.getParameter(PASSWORD));
+                Callable<String> call = ()-> userDao.addUser(user, req.getParameter(EMAIL), req.getParameter(PASSWORD));
+                String token = connectionManager.doInTransaction(call);
 
                 if(token == null){
                     req.setAttribute("error", "Try later.");
                     resp.sendRedirect(SIGN_UP_PAGE);
-                    return;
-                }else{
-                    sendConfirmingRef(token);
+                } else{
+                    mailManager.sendToken(req.getParameter(EMAIL), token);
                     req.getSession().setAttribute("user", user);
                     resp.sendRedirect(USER_PAGE);
                 }

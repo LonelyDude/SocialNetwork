@@ -21,14 +21,13 @@ public class UserDao {
             statement.setString(1, email);
             statement.setString(2, password);
             resultSet = statement.executeQuery();
-            if(resultSet.next()){{
+            if(resultSet.next()){
                 user = new User();
                 user.setId(resultSet.getInt("id"));
                 user.setName(resultSet.getString("name"));
                 user.setLastName(resultSet.getString("lastName"));
                 user.setBirth(resultSet.getDate("birth").toLocalDate());
                 user.setSex(resultSet.getString("sex").charAt(0));
-            }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -39,8 +38,8 @@ public class UserDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return user;
         }
+        return user;
     }
 
     public boolean checkEmail(String email){
@@ -60,18 +59,21 @@ public class UserDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }finally {
-            return result;
+            try {
+                statement.close();
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return result;
     }
 
-    public String addUser(User user, String email, String password){
-        Connection connection = null;
+    public String addUser(User user, String email, String password) {
         CallableStatement statement = null;
-        ResultSet resultSet = null;
         String result = null;
-        try{
-            connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
+        try {
+            Connection connection = dataSource.getConnection();
 
             statement = connection.prepareCall("{? = CALL insertUser(?, ?, ?, ?, ?, ?)}");
             statement.registerOutParameter(1, Types.TIMESTAMP);
@@ -83,22 +85,19 @@ public class UserDao {
             statement.setString(7, password);
             statement.execute();
 
-            connection.commit();
-
             Timestamp token = statement.getTimestamp(1);
             result = token.toString();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }
         }finally {
-            return result;
+            try {
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-
+        return result;
     }
 
     public void confirmEmail(String token){
@@ -106,18 +105,16 @@ public class UserDao {
         PreparedStatement statement = null;
         try{
             connection = dataSource.getConnection();
-            connection.setAutoCommit(false);
-
             statement = connection.prepareStatement("DELETE FROM email_confirming WHERE token = ?");
             statement.setString(1, token);
-
-            connection.commit();
+            statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
             try {
-                connection.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }

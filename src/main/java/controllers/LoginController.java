@@ -22,25 +22,18 @@ public class LoginController extends InjectionServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try{
+            User user = userDao.login(req.getParameter(LOGIN), req.getParameter(PASSWORD));
 
-        final AsyncContext asyncСontext = req.startAsync();
-        asyncСontext.start(()->{
-            try{
-                User user = userDao.login(req.getParameter(LOGIN), req.getParameter(PASSWORD));
-
-                if(user == null){
-                    resp.sendRedirect(MAIN_MENU_PAGE);
-                    return;
-                }
-
-                req.getSession().setAttribute("user", user);
-                resp.sendRedirect(USER_PAGE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }finally {
-                asyncСontext.complete();
+            if(user == null){
+                resp.sendRedirect(MAIN_MENU_PAGE);
+                return;
             }
-        });
 
+            req.getSession().setAttribute("user", user);
+            resp.sendRedirect(USER_PAGE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
