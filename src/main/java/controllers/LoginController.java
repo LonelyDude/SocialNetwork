@@ -4,7 +4,6 @@ import annotation.Inject;
 import dao.UserDao;
 import entity.User;
 
-import javax.servlet.AsyncContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

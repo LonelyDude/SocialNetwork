@@ -21,7 +21,6 @@
         </plugins>
     </build>
     <packaging>war</packaging>
-    <url>http://vk.com</url>
 
     <dependencies>
         <dependency>
@@ -36,6 +35,11 @@
             <version>4.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
@@ -46,6 +50,11 @@
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>javax.mail-api</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
             <version>1.6.0</version>
         </dependency>
 
