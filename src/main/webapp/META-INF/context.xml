@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<Context>
 <Resource name="jdbc/MyDB"
-          global="jdbc/MyDB"
           auth="Container"
           type="javax.sql.DataSource"
           driverClassName="com.mysql.jdbc.Driver"
@@ -12,3 +12,5 @@
           maxIdle="20"
           minIdle="5"
           maxWait="10000"/>
+</Context>
+

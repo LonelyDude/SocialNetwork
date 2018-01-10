@@ -19,7 +19,7 @@ public class InjectionServlet extends HttpServlet {
         try {
             String appCntxPath = this.getServletContext().getInitParameter(SPRING_CONFIG);
             ApplicationContext context = ApplicationContextSkeleton.getAppContext(appCntxPath);
-            List<Field> fields = FieldReflector.collectUpTo(this.getClass(), HttpServlet.class);
+            List<Field> fields = FieldReflector.collectUpTo(this.getClass(), InjectionServlet.class);
             fields = FieldReflector.filterList(fields);
             for (Field field : fields) {
                 String name = field.getAnnotation(Inject.class).value();

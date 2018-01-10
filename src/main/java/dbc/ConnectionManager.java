@@ -29,7 +29,7 @@ public class ConnectionManager {
         Connection connection = null;
         T result = null;
         try{
-            connection = connections.get();
+            connection = getConnection();
             connection.setAutoCommit(false);
             result = call.call();
             connection.commit();

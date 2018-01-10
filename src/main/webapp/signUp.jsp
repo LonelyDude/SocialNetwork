@@ -24,7 +24,7 @@
             <input name="sex" type="radio" value="F"/>
             <br/>
             <label for="dateOfBirth-field">Date of birth:</label>
-            <input type="date" name="calendar"/>
+            <input name="birth"  type="date"/>
             <br/>
             <input type="submit" value="Sign up"/>
         </form>

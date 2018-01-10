@@ -24,7 +24,7 @@ public class SignUpController extends InjectionServlet {
     private String NAME = "name";
     private String LAST_NAME = "lastName";
     private String SEX = "sex";
-    private String DATE = "date";
+    private String DATE = "birth";
 
     @Inject("userDao")
     private UserDao userDao;
@@ -37,35 +37,54 @@ public class SignUpController extends InjectionServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final AsyncContext asyncContext = req.getAsyncContext();
-        asyncContext.start(()->{
-            try{
-                if(! userDao.checkEmail(req.getParameter(EMAIL))){
-                    req.setAttribute("error", "Email already exists.");
-                    resp.sendRedirect(SIGN_UP_PAGE);
-                    return;
-                }
+        if(! userDao.checkEmail(req.getParameter(EMAIL))){
+            req.setAttribute("error", "Email already exists.");
+            resp.sendRedirect(SIGN_UP_PAGE);
+            return;
+        }
 
-                User user = makeUser(req);
+        User user = makeUser(req);
 
-                Callable<String> call = ()-> userDao.addUser(user, req.getParameter(EMAIL), req.getParameter(PASSWORD));
-                String token = connectionManager.doInTransaction(call);
+        Callable<String> call = ()-> userDao.addUser(user, req.getParameter(EMAIL), req.getParameter(PASSWORD));
+        String token = connectionManager.doInTransaction(call);
 
-                if(token == null){
-                    req.setAttribute("error", "Try later.");
-                    resp.sendRedirect(SIGN_UP_PAGE);
-                } else{
-                    mailManager.sendToken(req.getParameter(EMAIL), token);
-                    req.getSession().setAttribute("user", user);
-                    resp.sendRedirect(USER_PAGE);
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }finally {
-                asyncContext.complete();
-            }
-        });
+        if(token == null){
+            req.setAttribute("error", "Try later.");
+            resp.sendRedirect(SIGN_UP_PAGE);
+        } else{
+            mailManager.sendToken(req.getParameter(EMAIL), token);
+            req.getSession().setAttribute("user", user);
+            resp.sendRedirect(USER_PAGE);
+        }
+        //        final AsyncContext asyncContext = req.getAsyncContext();
+//        asyncContext.start(()->{
+//            try{
+//                if(! userDao.checkEmail(req.getParameter(EMAIL))){
+//                    req.setAttribute("error", "Email already exists.");
+//                    resp.sendRedirect(SIGN_UP_PAGE);
+//                    return;
+//                }
+//
+//                User user = makeUser(req);
+//
+//                Callable<String> call = ()-> userDao.addUser(user, req.getParameter(EMAIL), req.getParameter(PASSWORD));
+//                String token = connectionManager.doInTransaction(call);
+//
+//                if(token == null){
+//                    req.setAttribute("error", "Try later.");
+//                    resp.sendRedirect(SIGN_UP_PAGE);
+//                } else{
+//                    mailManager.sendToken(req.getParameter(EMAIL), token);
+//                    req.getSession().setAttribute("user", user);
+//                    resp.sendRedirect(USER_PAGE);
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }finally {
+//                asyncContext.complete();
+//            }
+//        });
     }
 
     private User makeUser(HttpServletRequest req){
@@ -73,14 +92,10 @@ public class SignUpController extends InjectionServlet {
         user.setName(req.getParameter(NAME));
         user.setLastName(req.getParameter(LAST_NAME));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         user.setBirth(LocalDate.parse(req.getParameter(DATE), formatter));
 
         user.setSex(req.getParameter(SEX).charAt(0));
         return user;
-    }
-
-    private void sendConfirmingRef(String token){
-
     }
 }

@@ -48,7 +48,7 @@ public class UserDao {
         boolean result = false;
         try{
             Connection connection = dataSource.getConnection();
-            statement = connection.prepareStatement("SELECT email FROM email_confirming WHERE email = ?");
+            statement = connection.prepareStatement("SELECT email FROM authorization WHERE email = ?");
             statement.setString(1, email);
             resultSet = statement.executeQuery();
             if(resultSet.next()){
@@ -70,23 +70,24 @@ public class UserDao {
     }
 
     public String addUser(User user, String email, String password) {
-        CallableStatement statement = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
         String result = null;
         try {
             Connection connection = dataSource.getConnection();
 
-            statement = connection.prepareCall("{? = CALL insertUser(?, ?, ?, ?, ?, ?)}");
-            statement.registerOutParameter(1, Types.TIMESTAMP);
-            statement.setString(2, user.getName());
-            statement.setString(3, user.getLastName());
-            statement.setDate(4, java.sql.Date.valueOf(user.getBirth()));
-            statement.setString(5, String.valueOf(user.getSex()));
-            statement.setString(6, email);
-            statement.setString(7, password);
-            statement.execute();
+            statement = connection.prepareCall("SELECT insertUser(?, ?, ?, ?, ?, ?);");
+            statement.setString(1, user.getName());
+            statement.setString(2, user.getLastName());
+            statement.setDate(3, java.sql.Date.valueOf(user.getBirth()));
+            statement.setString(4, String.valueOf(user.getSex()));
+            statement.setString(5, email);
+            statement.setString(6, password);
 
-            Timestamp token = statement.getTimestamp(1);
-            result = token.toString();
+            resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                result = resultSet.getTimestamp(1).toString();
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
