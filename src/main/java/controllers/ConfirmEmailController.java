@@ -12,8 +12,8 @@ import java.util.concurrent.Callable;
 
 public class ConfirmEmailController extends InjectionServlet {
 
-    private String TOKEN = "token";
-    public static final String USER_PAGE = "user.jsp";
+    private static final String TOKEN = "token";
+    private static final String USER_PAGE = "user.jsp";
 
     @Inject("userDao")
     private UserDao userDao;

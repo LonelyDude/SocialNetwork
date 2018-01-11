@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Вход</title>
+    <title>Login</title>
 </head>
 <body>
         <form action="${pageContext.request.contextPath}/login" method="post">

@@ -17,14 +17,14 @@ import java.util.concurrent.Callable;
 
 public class SignUpController extends InjectionServlet {
 
-    private String SIGN_UP_PAGE = "signUp.jsp";
-    private String USER_PAGE = "user.jsp";
-    private String EMAIL = "email";
-    private String PASSWORD = "password";
-    private String NAME = "name";
-    private String LAST_NAME = "lastName";
-    private String SEX = "sex";
-    private String DATE = "birth";
+    private static final String SIGN_UP_PAGE = "signUp.jsp";
+    private static final String USER_PAGE = "user.jsp";
+    private static final String EMAIL = "email";
+    private static final String PASSWORD = "password";
+    private static final String NAME = "name";
+    private static final String LAST_NAME = "lastName";
+    private static final String SEX = "sex";
+    private static final String DATE = "birth";
 
     @Inject("userDao")
     private UserDao userDao;

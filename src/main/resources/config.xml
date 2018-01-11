@@ -10,6 +10,10 @@
         <property name="dataSource" ref="connectionManager"/>
     </bean>
 
+    <bean name="messageDao" class="dao.MessageDao" scope="singleton">
+        <property name="dataSource" ref="connectionManager"/>
+    </bean>
+
     <bean name="mailManager" class="mail.MailManager" scope="singleton" init-method="init">
         <property name="smtpHost" value="smtp.mail.ru"/>
         <property name="smtpPort" value="465"/>

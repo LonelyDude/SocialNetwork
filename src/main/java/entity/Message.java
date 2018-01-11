@@ -1,27 +1,29 @@
 package entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Message {
 
-    private User from;
-    private User to;
+    private int id;
+    private int from;
+    private int to;
     private String content;
-    private Date date;
+    private LocalDate date;
 
-    public User getFrom() {
+    public int getFrom() {
         return from;
     }
 
-    public void setFrom(User from) {
+    public void setFrom(int from) {
         this.from = from;
     }
 
-    public User getTo() {
+    public int getTo() {
         return to;
     }
 
-    public void setTo(User to) {
+    public void setTo(int to) {
         this.to = to;
     }
 
@@ -33,11 +35,19 @@ public class Message {
         this.content = content;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

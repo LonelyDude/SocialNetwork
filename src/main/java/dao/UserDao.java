@@ -42,6 +42,36 @@ public class UserDao {
         return user;
     }
 
+    public User getUser(int id){
+        User user = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            Connection connection = dataSource.getConnection();
+            statement = connection.prepareStatement("SELECT * FROM user WHERE id = ?");
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+            if(resultSet.next()){
+                user = new User();
+                user.setId(resultSet.getInt("id"));
+                user.setName(resultSet.getString("name"));
+                user.setLastName(resultSet.getString("lastName"));
+                user.setBirth(resultSet.getDate("birth").toLocalDate());
+                user.setSex(resultSet.getString("sex").charAt(0));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+                resultSet.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return user;
+    }
+
     public boolean checkEmail(String email){
         PreparedStatement statement = null;
         ResultSet resultSet = null;
