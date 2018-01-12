@@ -6,13 +6,13 @@
     <title>Messages</title>
 </head>
 <body>
-           <c:forEach items="${messages}" var="message">
-           <c:when test="${message}.getTo() == ${user}.getId()">
-               <tr>
-                   <br>
-                     <a href="${pageContext.request.contextPath}/message?messageId=${message.getId()}">Message content<a/>
-               </tr>
-           </c:when>
-           </c:forEach>
+<%
+List<User> users = (List<User>) request.getAttribute("users");
+for(User user : users){
+%>
+<a href = <%=request.getContextPath() + "/message?messageId=" + user.getId()%> >Messages from:<%=user%><a/>
+<%
+}
+%>
 </body>
 </html>

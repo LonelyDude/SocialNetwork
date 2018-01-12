@@ -13,8 +13,6 @@ import java.time.LocalDate;
 
 public class SendMessageController extends InjectionServlet {
 
-    public static final String MAIN_MENU_PAGE = "login.jsp";
-
     @Inject("messageDao")
     private MessageDao messageDao;
 
@@ -24,9 +22,10 @@ public class SendMessageController extends InjectionServlet {
         Message message = new Message();
         message.setContent(req.getParameter("content"));
         message.setFrom(user.getId());
-        message.setTo(Integer.valueOf(req.getParameter("to")));
+        int to = Integer.valueOf(req.getParameter("to"));
+        message.setTo(to);
         message.setDate(LocalDate.now());
         messageDao.sendMessage(message);
-        resp.sendRedirect(MAIN_MENU_PAGE);
+        resp.sendRedirect(req.getContextPath() + "/message?messageId=" + to);
     }
 }

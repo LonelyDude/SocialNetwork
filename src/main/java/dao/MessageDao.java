@@ -14,7 +14,39 @@ public class MessageDao {
 
     private ConnectionManager dataSource;
 
-    public List<Message> getMessages(User user){
+    public List<User> getUsers(User user){
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<User> list = new LinkedList<>();
+        try{
+            connection = dataSource.getConnection();
+
+            statement = connection.prepareStatement("SELECT id, name, lastName FROM user WHERE user.id IN (SELECT user_id_from FROM message WHERE (message.user_id_to = ?))");
+            statement.setInt(1, user.getId());
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                User usr = new User();
+                usr.setId(resultSet.getInt("id"));
+                usr.setName(resultSet.getString("name"));
+                usr.setLastName(resultSet.getString("lastName"));
+                list.add(usr);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                resultSet.close();
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return list;
+    }
+
+    public List<Message> getMessages(User user, int from){
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -22,14 +54,12 @@ public class MessageDao {
         try{
             connection = dataSource.getConnection();
 
-            statement = connection.prepareStatement("SELECT * FROM message WHERE (message.user_id_from = ? OR message.user_id_to = ?)");
+            statement = connection.prepareStatement("SELECT * FROM message WHERE ((message.user_id_from = ? OR message.user_id_to = ?) AND (message.user_id_from = ? OR message.user_id_to = ?))");
             statement.setInt(1, user.getId());
             statement.setInt(2, user.getId());
+            statement.setInt(3, from);
+            statement.setInt(4, from);
             resultSet = statement.executeQuery();
-
-            if(resultSet == null){
-                return null;
-            }
 
             while (resultSet.next()){
                 Message message = new Message();
@@ -44,7 +74,7 @@ public class MessageDao {
             e.printStackTrace();
         } finally {
             try {
-                if(resultSet != null) resultSet.close();
+                resultSet.close();
                 statement.close();
             } catch (SQLException e) {
                 e.printStackTrace();

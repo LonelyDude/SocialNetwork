@@ -7,9 +7,7 @@
     <title>User</title>
 </head>
 <body>
-       <cite>Name:<%=user.getName()%></cite>
-       <br>
-       <cite>Name:<%=user.getLastName()%></cite>
+       <cite><%=user%></cite>
        <br>
        <a href="${pageContext.request.contextPath}/messages">Messages<a/>
        <br>
@@ -17,6 +15,7 @@
        <label for="email-field">Message:</label>
        <input type="text" name="content"/>
        <br/>
+       <label for="email-field">To:</label>
        <input type="text" name="to"/>
        <br/>
        <input type="submit" value="Response"/>

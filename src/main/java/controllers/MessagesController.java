@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,11 +22,8 @@ public class MessagesController extends InjectionServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Message> list = messageDao.getMessages((User) req.getSession().getAttribute("user"));
-        Collections.sort(list, (a, b)->{
-            return a.getDate().compareTo(b.getDate());
-        });
-        req.setAttribute("messages", list);
+        List<User> list = messageDao.getUsers((User) req.getSession().getAttribute("user"));
+        req.setAttribute("users", list);
         req.getRequestDispatcher(MESSAGES_PAGE).forward(req, resp);
     }
 }
