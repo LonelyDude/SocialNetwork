@@ -47,12 +47,10 @@
         <%
         }
         %>
-		<div class="banner-button">
+        </br>
+		<span class="banner-button">
 			<a href="${pageContext.request.contextPath}/user.jsp">My Profile</a>
-		</div>
-		<div class="banner-button">
-			<a href="${pageContext.request.contextPath}/friends">Friends</a>
-		</div>
+		</span>
 </div>
 </body>
 </html>

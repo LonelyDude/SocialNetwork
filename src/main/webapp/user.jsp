@@ -39,12 +39,10 @@
 <div class="banner">
 		<img src="images/logo.png" alt=""/>
 		<h3><%=user%></h3>
-		<div class="banner-button">
-			<a href="${pageContext.request.contextPath}/friends">Friends</a>
-		</div>
-		<div class="banner-button">
+		</br>
+		<span class="banner-button">
 			<a href="${pageContext.request.contextPath}/messages">Messages</a>
-		</div>
+		</span>
 </div>
 </body>
 </html>
