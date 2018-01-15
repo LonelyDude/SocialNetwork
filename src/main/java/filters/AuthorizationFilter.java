@@ -7,18 +7,27 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AuthorizationFilter extends HttpFilter {
-    public static final String MAIN_MENU_PAGE = "login.jsp";
-    public static final String SIGN_UP_PAGE = "signUp.jsp";
+    private static final String MAIN_MENU = "login";
+    private static final String SIGN_UP = "signUp";
+    private static final String JSP = ".jsp";
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         if(req.getSession().getAttribute("user") == null){
             String path = req.getRequestURI();
-            if(path.contains(SIGN_UP_PAGE)){
-                req.getRequestDispatcher(SIGN_UP_PAGE).forward(req, res);
+            if(path.contains(SIGN_UP)){
+                if(path.contains(JSP)){
+                    req.getRequestDispatcher(SIGN_UP + JSP).forward(req, res);
+                    return;
+                }
+                req.getRequestDispatcher(SIGN_UP).forward(req, res);
             }
             else{
-                req.getRequestDispatcher(MAIN_MENU_PAGE).forward(req, res);
+                if(path.contains(JSP)){
+                    req.getRequestDispatcher(MAIN_MENU + JSP).forward(req, res);
+                    return;
+                }
+                req.getRequestDispatcher(MAIN_MENU).forward(req, res);
             }
             return;
         }

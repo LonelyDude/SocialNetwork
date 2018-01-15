@@ -18,14 +18,18 @@ public class SendMessageController extends InjectionServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Message message = makeMessage(req);
+        messageDao.sendMessage(message);
+        resp.sendRedirect(req.getContextPath() + "/message?messageId=" + message.getTo());
+    }
+
+    private Message makeMessage(HttpServletRequest req){
         User user = (User)req.getSession().getAttribute("user");
         Message message = new Message();
         message.setContent(req.getParameter("content"));
         message.setFrom(user.getId());
-        int to = Integer.valueOf(req.getParameter("to"));
-        message.setTo(to);
+        message.setTo(Integer.valueOf(req.getParameter("to")));
         message.setDate(LocalDate.now());
-        messageDao.sendMessage(message);
-        resp.sendRedirect(req.getContextPath() + "/message?messageId=" + to);
+        return message;
     }
 }

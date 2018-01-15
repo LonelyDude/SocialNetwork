@@ -11,10 +11,10 @@ import java.io.IOException;
 
 public class LoginController extends InjectionServlet {
 
-    public static final String MAIN_MENU_PAGE = "login.jsp";
-    public static final String USER_PAGE = "user.jsp";
-    public static final String LOGIN = "login";
-    public static final String PASSWORD = "password";
+    private static final String MAIN_MENU_PAGE = "login.jsp";
+    private static final String USER_PAGE = "user.jsp";
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
 
     @Inject("userDao")
     private UserDao userDao;
